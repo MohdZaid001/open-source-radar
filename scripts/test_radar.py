@@ -305,6 +305,8 @@ class MarkdownTests(unittest.TestCase):
         self.assertEqual(radar.format_stars(1250000), "1.2M")
         self.assertEqual(radar.format_stars(1000000), "1M")
         self.assertEqual(radar.format_stars(999950), "1M")
+        self.assertEqual(radar.format_stars(999), "999")
+        self.assertEqual(radar.format_stars(999950000), "1B")
 
 
 class NotesForTests(unittest.TestCase):
