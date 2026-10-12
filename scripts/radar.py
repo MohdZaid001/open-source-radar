@@ -537,12 +537,25 @@ AI_NOTE = {
 
 def md_escape(text: str) -> str:
     text = re.sub(r"\s+", " ", text).strip()
-    return text.replace("\\", "\\\\").replace("|", "\\|").replace("<", "&lt;").replace(">", "&gt;").replace("`", "'")
+    return (
+        text.replace("\\", "\\\\")
+        .replace("|", "\\|")
+        .replace("[", "\\[")
+        .replace("]", "\\]")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace("`", "'")
+    )
 
 
 def format_stars(stars: int) -> str:
+    if stars >= 1_000_000:
+        return f"{stars / 1_000_000:.1f}M".replace(".0M", "M")
     if stars >= 1000:
-        return f"{stars / 1000:.1f}k".replace(".0k", "k")
+        formatted = f"{stars / 1000:.1f}k".replace(".0k", "k")
+        if formatted == "1000k":
+            return "1M"
+        return formatted
     return str(stars)
 
 

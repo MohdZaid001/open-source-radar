@@ -283,12 +283,28 @@ class TopicAndLabelTests(unittest.TestCase):
 
 class MarkdownTests(unittest.TestCase):
     def test_escape_keeps_tables_intact(self):
-        self.assertEqual(radar.md_escape("a | b <script>\n`x`"), "a \\| b &lt;script&gt; 'x'")
+        self.assertEqual(
+            radar.md_escape("a | b <script>\n`x`"),
+            "a \\| b &lt;script&gt; 'x'",
+        )
+
+    def test_escape_square_brackets(self):
+        self.assertEqual(
+            radar.md_escape("Crash on ] in path"),
+            r"Crash on \] in path",
+        )
+        self.assertEqual(
+            radar.md_escape("[broken title"),
+            r"\[broken title",
+        )
 
     def test_star_formatting(self):
         self.assertEqual(radar.format_stars(950), "950")
         self.assertEqual(radar.format_stars(12000), "12k")
         self.assertEqual(radar.format_stars(12345), "12.3k")
+        self.assertEqual(radar.format_stars(1250000), "1.2M")
+        self.assertEqual(radar.format_stars(1000000), "1M")
+        self.assertEqual(radar.format_stars(999950), "1M")
 
 
 class NotesForTests(unittest.TestCase):
